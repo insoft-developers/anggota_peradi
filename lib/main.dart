@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
   runApp(const MyApp());
 }
 
@@ -18,6 +24,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+/// ⬅️ PAGE PENUNDA (PENTING)
 class InitPage extends StatefulWidget {
   const InitPage({super.key});
 
@@ -32,7 +39,7 @@ class _InitPageState extends State<InitPage> {
   void initState() {
     super.initState();
 
-    /// 🔥 TUNGGU FRAME PERTAMA SELESAI
+    /// ⛔ JANGAN buat WebView di initState langsung
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Future.delayed(const Duration(milliseconds: 300));
       if (mounted) {
@@ -44,9 +51,8 @@ class _InitPageState extends State<InitPage> {
   @override
   Widget build(BuildContext context) {
     if (!ready) {
-      // ⛑️ anti white screen
+      /// ⬅️ ini penting, jangan return Container kosong
       return const Scaffold(
-        backgroundColor: Colors.white,
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -68,6 +74,7 @@ class _WebViewPageState extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white, // ⬅️ WAJIB di iOS
       body: SafeArea(
         child: InAppWebView(
           initialUrlRequest: URLRequest(
@@ -78,12 +85,15 @@ class _WebViewPageState extends State<WebViewPage> {
             domStorageEnabled: true,
             databaseEnabled: true,
             cacheEnabled: true,
-            mediaPlaybackRequiresUserGesture: false,
             allowsInlineMediaPlayback: true,
-            transparentBackground: false,
+            mediaPlaybackRequiresUserGesture: false,
+            transparentBackground: false, // ⬅️ WAJIB
           ),
           onWebViewCreated: (c) {
             controller = c;
+          },
+          onLoadError: (c, url, code, msg) {
+            debugPrint('WEBVIEW ERROR: $code $msg');
           },
         ),
       ),
