@@ -52,15 +52,16 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
-	<!-- Flutter & WebView -->
-	<key>io.flutter.embedded_views_preview</key>
-	<true/>
+	<!-- Scene (LEGACY MODE - IMPORTANT) -->
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 
-	<!-- Network -->
+	<!-- Network (SAFE FOR WEBVIEW) -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>

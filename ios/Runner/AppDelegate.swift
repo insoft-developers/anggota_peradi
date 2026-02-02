@@ -1,9 +1,8 @@
 import UIKit
 import Flutter
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
-
 
   override func application(
     _ application: UIApplication,
@@ -20,6 +19,7 @@ import Flutter
     // Register plugins
     GeneratedPluginRegistrant.register(with: self)
 
-    return true
+    // ⚠️ WAJIB panggil super
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
