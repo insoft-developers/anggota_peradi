@@ -3,7 +3,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await InAppWebViewController.setWebContentsDebuggingEnabled(false);
   runApp(const MyApp());
 }
 
@@ -33,35 +32,33 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_controller != null) {
-          bool canGoBack = await _controller!.canGoBack();
-          if (canGoBack) {
-            _controller!.goBack();
-            return false; // ❗ jangan keluar app
-          }
+        if (_controller != null && await _controller!.canGoBack()) {
+          _controller!.goBack();
+          return false;
         }
-        return true; // keluar app kalau sudah halaman awal
+        return true;
       },
-      child: SafeArea(
-        child: InAppWebView(
-          initialUrlRequest: URLRequest(
-            url: WebUri('https://anggotaperadi.or.id'),
+      child: Scaffold(
+        body: SafeArea(
+          child: InAppWebView(
+            initialUrlRequest: URLRequest(
+              url: WebUri('https://anggotaperadi.or.id'),
+            ),
+            initialSettings: InAppWebViewSettings(
+              javaScriptEnabled: true,
+              domStorageEnabled: true,
+              databaseEnabled: true,
+              cacheEnabled: true,
+              allowsInlineMediaPlayback: true,
+              mediaPlaybackRequiresUserGesture: false,
+              javaScriptCanOpenWindowsAutomatically: true,
+              useShouldOverrideUrlLoading: true,
+              supportZoom: false,
+            ),
+            onWebViewCreated: (controller) {
+              _controller = controller;
+            },
           ),
-          initialSettings: InAppWebViewSettings(
-            javaScriptEnabled: true,
-            domStorageEnabled: true,
-            databaseEnabled: true,
-            cacheEnabled: true,
-
-            javaScriptCanOpenWindowsAutomatically: true,
-            allowsInlineMediaPlayback: true,
-
-            useShouldOverrideUrlLoading: false,
-            supportZoom: false,
-          ),
-          onWebViewCreated: (controller) {
-            _controller = controller;
-          },
         ),
       ),
     );
