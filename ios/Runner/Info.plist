@@ -36,9 +36,6 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 
-	<!-- ❌ JANGAN ADA Main.storyboard -->
-	<!-- <key>UIMainStoryboardFile</key> -->
-
 	<!-- Orientation -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -55,10 +52,11 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
-	<!-- WebView & Flutter -->
+	<!-- Flutter & WebView -->
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 
+	<!-- Network -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
