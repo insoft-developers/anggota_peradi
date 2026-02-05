@@ -12,7 +12,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Home Page',
+          'Homepage',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF0D47A1),
@@ -115,7 +115,7 @@ class HomeView extends StatelessWidget {
                 _menuCard(
                   context,
                   title: 'Formulir Data Ulang',
-                  subtitle: 'Formulir Data Ulang Advocat Peradi Tahun 2024',
+                  subtitle: 'Formulir Data Ulang Advocat Peradi',
                   icon: Icons.assignment,
                   onTap: () {
                     Navigator.push(
@@ -133,7 +133,7 @@ class HomeView extends StatelessWidget {
                 _menuCard(
                   context,
                   title: 'Formulir Pindah Domisili',
-                  subtitle: 'Formulir Pemberitahuan Pindah Domisili Anggota',
+                  subtitle: 'Formulir Pemberitahuan Pindah Domisili',
                   icon: Icons.location_city,
                   onTap: () {
                     Navigator.push(

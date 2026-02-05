@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:peradi/home.dart';
+import 'package:peradi/intro.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +58,6 @@ class _InitPageState extends State<InitPage> {
       );
     }
 
-    return const HomeView();
+    return const IntroPage();
   }
 }

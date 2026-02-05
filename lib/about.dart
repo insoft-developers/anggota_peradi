@@ -26,6 +26,9 @@ class AboutPeradiPage extends StatelessWidget {
             ),
             SizedBox(height: 12),
             Text(
+              '... organisasi advokat nasional ... \n'
+              'Informasi dalam aplikasi ini dapat diakses oleh masyarakat umum '
+              'untuk memahami peran dan fungsi organisasi advokat di Indonesia.\n\n'
               'Perhimpunan Advokat Indonesia (PERADI) adalah organisasi advokat '
               'nasional yang menjadi wadah profesi advokat di Indonesia berdasarkan '
               'Undang-Undang Nomor 18 Tahun 2003 tentang Advokat. Organisasi ini '
@@ -49,7 +52,7 @@ class AboutPeradiPage extends StatelessWidget {
               'dalam penegakan hukum, pembinaan profesi, dan perlindungan hak serta '
               'kepentingan pencari keadilan di seluruh Indonesia. PERADI juga aktif '
               'mengembangkan berbagai kegiatan pendidikan, ujian profesi, serta acara '
-              'organisasi lain untuk anggotanya.',
+              'organisasi lain.',
               style: TextStyle(fontSize: 14, height: 1.6),
             ),
             SizedBox(height: 16),
