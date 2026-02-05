@@ -69,6 +69,10 @@
 	<!-- Permissions -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Digunakan untuk memilih foto atau dokumen dari galeri untuk formulir upload</string>
+	
+	<key>NSCameraUsageDescription</key>
+	<string>Digunakan untuk mengambil foto dokumen</string>
+
 
 	<!-- Misc -->
 	<key>CADisableMinimumFrameDurationOnPhone</key>
