@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:peradi/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,46 +58,6 @@ class _InitPageState extends State<InitPage> {
       );
     }
 
-    return const WebViewPage();
-  }
-}
-
-class WebViewPage extends StatefulWidget {
-  const WebViewPage({super.key});
-
-  @override
-  State<WebViewPage> createState() => _WebViewPageState();
-}
-
-class _WebViewPageState extends State<WebViewPage> {
-  InAppWebViewController? controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, // ⬅️ WAJIB di iOS
-      body: SafeArea(
-        child: InAppWebView(
-          initialUrlRequest: URLRequest(
-            url: WebUri('https://anggotaperadi.or.id'),
-          ),
-          initialSettings: InAppWebViewSettings(
-            javaScriptEnabled: true,
-            domStorageEnabled: true,
-            databaseEnabled: true,
-            cacheEnabled: true,
-            allowsInlineMediaPlayback: true,
-            mediaPlaybackRequiresUserGesture: false,
-            transparentBackground: false, // ⬅️ WAJIB
-          ),
-          onWebViewCreated: (c) {
-            controller = c;
-          },
-          onLoadError: (c, url, code, msg) {
-            debugPrint('WEBVIEW ERROR: $code $msg');
-          },
-        ),
-      ),
-    );
+    return const HomeView();
   }
 }
