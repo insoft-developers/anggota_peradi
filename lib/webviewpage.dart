@@ -12,53 +12,50 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   InAppWebViewController? controller;
-  late PullToRefreshController pullToRefreshController;
-  bool isLoading = true; // untuk loading indicator
+  PullToRefreshController? pullToRefreshController;
+  bool isLoading = true;
+  bool isDisposed = false; // <<< PENJAGA
 
   @override
   void initState() {
     super.initState();
 
-    // 🔹 Init PullToRefreshController
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
-        color: const Color(0xFF0D47A1), // warna loading indicator
+        color: const Color(0xFF0D47A1),
       ),
       onRefresh: () async {
-        if (controller != null) {
-          try {
-            await controller!.reload();
-          } catch (_) {}
-        }
+        if (isDisposed) return;
+        try {
+          await controller?.reload();
+        } catch (_) {}
       },
     );
   }
 
   @override
   void dispose() {
-    pullToRefreshController.dispose();
+    isDisposed = true; // <<< tandai sudah mati
+    controller = null;
+    pullToRefreshController = null;
     super.dispose();
+  }
+
+  void stopRefresh() {
+    if (isDisposed) return;
+    try {
+      pullToRefreshController?.endRefreshing();
+    } catch (_) {}
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.judul,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xFF0D47A1),
-        iconTheme: const IconThemeData(color: Colors.white), // panah back putih
-      ),
-      backgroundColor: Colors.white, // WAJIB di iOS
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
-            // 1️⃣ Placeholder background
             Container(color: Colors.white),
-
-            // 2️⃣ WebView dengan Pull-to-Refresh
             InAppWebView(
               initialUrlRequest: URLRequest(url: WebUri(widget.pageUrl)),
               pullToRefreshController: pullToRefreshController,
@@ -69,23 +66,24 @@ class _WebViewPageState extends State<WebViewPage> {
                 cacheEnabled: true,
                 allowsInlineMediaPlayback: true,
                 mediaPlaybackRequiresUserGesture: false,
-                transparentBackground: false, // WAJIB supaya placeholder muncul
+                transparentBackground: false,
               ),
-              onWebViewCreated: (controller) => this.controller = controller,
-              onLoadStart: (controller, url) {
+              onWebViewCreated: (c) => controller = c,
+              onLoadStart: (c, url) {
+                if (isDisposed) return;
                 setState(() => isLoading = true);
               },
-              onLoadStop: (controller, url) async {
+              onLoadStop: (c, url) async {
+                if (isDisposed) return;
                 setState(() => isLoading = false);
-                pullToRefreshController.endRefreshing();
+                stopRefresh();
               },
-              onLoadError: (controller, url, code, msg) {
+              onLoadError: (c, url, code, msg) {
+                if (isDisposed) return;
                 setState(() => isLoading = false);
-                pullToRefreshController.endRefreshing();
+                stopRefresh();
               },
             ),
-
-            // 3️⃣ Loading indicator
             if (isLoading) const Center(child: CircularProgressIndicator()),
           ],
         ),

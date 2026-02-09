@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:peradi/about.dart';
+import 'package:peradi/forms/daftar_ulang/daftar_ulang.dart';
+import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
 import 'package:peradi/webviewpage.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  final controller = Get.put(DaftarUlangController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -118,16 +127,7 @@ class HomeView extends StatelessWidget {
                   subtitle: 'Formulir Data Ulang Advocat Peradi',
                   icon: Icons.assignment,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WebViewPage(
-                          pageUrl:
-                              'https://anggotaperadi.or.id/anggota/formulir/formulir-data-ulang-advokat-peradi-2024',
-                          judul: 'Formulir Data Ulang',
-                        ),
-                      ),
-                    );
+                    Get.to(() => DaftarUlang());
                   },
                 ),
                 _menuCard(
