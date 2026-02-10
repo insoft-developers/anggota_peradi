@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:peradi/about.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
+import 'package:peradi/forms/pindah_domisili/pindah_domisi.dart';
+import 'package:peradi/forms/pindah_domisili/pindah_domisili_controller.dart';
 import 'package:peradi/webviewpage.dart';
 
 class HomeView extends StatefulWidget {
@@ -14,6 +16,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final controller = Get.put(DaftarUlangController(), permanent: true);
+  final controller2 = Get.put(PindahDomisiliController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -127,7 +130,7 @@ class _HomeViewState extends State<HomeView> {
                   subtitle: 'Formulir Data Ulang Advocat Peradi',
                   icon: Icons.assignment,
                   onTap: () {
-                    Get.to(() => DaftarUlang());
+                    Get.to(() => const DaftarUlang());
                   },
                 ),
                 _menuCard(
@@ -136,16 +139,7 @@ class _HomeViewState extends State<HomeView> {
                   subtitle: 'Formulir Pemberitahuan Pindah Domisili',
                   icon: Icons.location_city,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WebViewPage(
-                          pageUrl:
-                              'https://anggotaperadi.or.id/anggota/formulir/formulir-pemberitahuan-pindah-domisili-anggota',
-                          judul: 'Formulir Pindah Domisili',
-                        ),
-                      ),
-                    );
+                    Get.to(() => const PindahDomisiliPage());
                   },
                 ),
                 _menuCard(

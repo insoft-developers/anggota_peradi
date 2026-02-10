@@ -49,7 +49,10 @@ class _DaftarUlangState extends State<DaftarUlang> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title),
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: onTap,
@@ -165,7 +168,7 @@ class _DaftarUlangState extends State<DaftarUlang> {
                       if (!RegExp(r'^[0-9]+$').hasMatch(v)) {
                         return "Hanya angka";
                       }
-                      if (v.length != 11) {
+                      if (v.length > 11) {
                         return "Harus 11 digit";
                       }
                       return null;
@@ -405,7 +408,7 @@ class _DaftarUlangState extends State<DaftarUlang> {
                 data: c.dataTambahanItems['description']?.toString() ?? "",
                 style: {
                   "p": Style(
-                    color: Colors.black38,
+                    color: Colors.black54,
                   ),
                 },
               ),
