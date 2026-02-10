@@ -71,7 +71,7 @@
 	<string>Digunakan untuk memilih foto atau dokumen dari galeri untuk formulir upload</string>
 	
 	<key>NSCameraUsageDescription</key>
-	<string>Digunakan untuk mengambil foto dokumen</string>
+	<string>Aplikasi ini menggunakan kamera untuk memungkinkan pengguna mengambil foto dan mengunggahnya sebagai gambar pendukung seperti dokumen bukti, atau laporan </string>
 
 
 	<!-- Misc -->

@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:peradi/about.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
+import 'package:peradi/forms/kartu_rusak/kartu_rusak.dart';
+import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisi.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisili_controller.dart';
 import 'package:peradi/webviewpage.dart';
@@ -17,6 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final controller = Get.put(DaftarUlangController(), permanent: true);
   final controller2 = Get.put(PindahDomisiliController(), permanent: true);
+  final controller3 = Get.put(KartuRusakController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -148,16 +151,7 @@ class _HomeViewState extends State<HomeView> {
                   subtitle: 'Formulir Pengajuan Kartu Rusak atau Hilang',
                   icon: Icons.credit_card,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WebViewPage(
-                          pageUrl:
-                              'https://anggotaperadi.or.id/anggota/formulir/formulir-pengganti-kartu-rusak',
-                          judul: 'Pengganti Kartu Rusak',
-                        ),
-                      ),
-                    );
+                    Get.to(() => const KartuRusakPage());
                   },
                 ),
                 const SizedBox(height: 16),
@@ -278,16 +272,24 @@ class _HomeViewState extends State<HomeView> {
       title: Text(title),
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => WebViewPage(
-              pageUrl: url,
-              judul: title,
+        Get.back();
+        if (title == 'Formulir Data Ulang') {
+          Get.to(() => const DaftarUlang());
+        } else if (title == 'Formulir Pindah Domisili') {
+          Get.to(() => const PindahDomisiliPage());
+        } else if (title == 'Pengganti Kartu Rusak') {
+          Get.to(() => const KartuRusakPage());
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WebViewPage(
+                pageUrl: url,
+                judul: title,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }
