@@ -23,7 +23,7 @@ class IntroPage extends StatelessWidget {
               const SizedBox(height: 32),
 
               const Text(
-                'PERADI\nPersatuan Advokat Indonesia',
+                'PERADI\nPerhimpunan Advokat Indonesia',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 22,
