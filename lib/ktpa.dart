@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peradi/about.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
+import 'package:peradi/forms/kartu_hilang/kartu_hilang.dart';
 import 'package:peradi/forms/kartu_rusak/kartu_rusak.dart';
 import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisi.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisili_controller.dart';
-import 'package:peradi/ktpa.dart';
 import 'package:peradi/webviewpage.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class Ktpa extends StatefulWidget {
+  const Ktpa({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<Ktpa> createState() => _KtpaState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _KtpaState extends State<Ktpa> {
   final controller = Get.put(DaftarUlangController(), permanent: true);
   final controller2 = Get.put(PindahDomisiliController(), permanent: true);
   final controller3 = Get.put(KartuRusakController(), permanent: true);
@@ -28,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Homepage',
+          'Penggantian KTPA',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF0D47A1),
@@ -37,73 +36,6 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
       backgroundColor: const Color(0xFFF2F4F6),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color(0xFF0D47A1),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(40),
-                    child: Image.asset(
-                      'assets/images/app_icon.png',
-                      width: 80,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'ANGGOTA PERADI',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-            _drawerItem(
-              context,
-              icon: Icons.assignment,
-              title: 'Data Ulang',
-              url:
-                  'https://anggotaperadi.or.id/anggota/formulir/formulir-data-ulang-advokat-peradi-2024',
-            ),
-            _drawerItem(
-              context,
-              icon: Icons.location_on,
-              title: 'Penggantian KTPA',
-              url:
-                  'https://anggotaperadi.or.id/anggota/formulir/formulir-pemberitahuan-pindah-domisili-anggota',
-            ),
-            // _drawerItem(
-            //   context,
-            //   icon: Icons.credit_card,
-            //   title: 'Pengganti Kartu Rusak',
-            //   url:
-            //       'https://anggotaperadi.or.id/anggota/formulir/formulir-pengganti-kartu-rusak',
-            // ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: const Text('Tentang PERADI'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const AboutPeradiPage(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -112,13 +44,6 @@ class _HomeViewState extends State<HomeView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
-                Center(
-                  child: Image.asset(
-                    'assets/images/logo.webp',
-                    width: 220,
-                  ),
-                ),
-                const SizedBox(height: 30),
                 Text(
                   'Pilih Formulir Dibawah Ini',
                   style: textTheme.headlineSmall?.copyWith(
@@ -130,68 +55,48 @@ class _HomeViewState extends State<HomeView> {
                 const SizedBox(height: 24),
                 _menuCard(
                   context,
-                  title: 'Data Ulang',
-                  subtitle: 'Formulir Data Ulang Advocat Peradi',
-                  icon: Icons.assignment,
+                  title: 'Formulir Kartu Hilang',
+                  subtitle: 'Formulir Kartu Hilang Advocat Peradi',
+                  icon: Icons.sd_card_alert,
                   onTap: () {
-                    Get.to(() => const DaftarUlang());
+                    Get.to(() => const KartuHilangPage());
                   },
                 ),
                 _menuCard(
                   context,
-                  title: 'Penggantian KTPA',
-                  subtitle: 'Formulir Penggantian KTPA',
-                  icon: Icons.location_city,
+                  title: 'Formulir Kartu Rusak',
+                  subtitle: 'Formulir Kartu Rusak Advocat Peradi',
+                  icon: Icons.broken_image,
                   onTap: () {
-                    Get.to(() => const Ktpa());
+                    Get.to(() => const PindahDomisiliPage());
                   },
                 ),
-                // _menuCard(
-                //   context,
-                //   title: 'Pengganti Kartu Rusak',
-                //   subtitle: 'Formulir Pengajuan Kartu Rusak atau Hilang',
-                //   icon: Icons.credit_card,
-                //   onTap: () {
-                //     Get.to(() => const KartuRusakPage());
-                //   },
-                // ),
-                const SizedBox(height: 16),
-                InkWell(
+                _menuCard(
+                  context,
+                  title: 'Formulir Perpindahan Domisili',
+                  subtitle: 'Formulir Permohonan Perpndahan Domisili',
+                  icon: Icons.move_down_sharp,
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WebViewPage(
-                          pageUrl: 'https://anggotaperadi.or.id/privacy_policy',
-                          judul: 'Privacy Policy',
-                        ),
-                      ),
-                    );
+                    Get.to(() => const PindahDomisiliPage());
                   },
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      'Privacy Policy',
-                      style: textTheme.bodyMedium?.copyWith(
-                        color: Colors.blueAccent,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
                 ),
-                const SizedBox(height: 32),
-                Text(
-                  'Supported By',
-                  style: textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+                _menuCard(
+                  context,
+                  title: 'Formulir Penambahan Gelar',
+                  subtitle: 'Formulir Penambahan Gelar Anggota Peradi',
+                  icon: Icons.school,
+                  onTap: () {
+                    Get.to(() => const PindahDomisiliPage());
+                  },
                 ),
-                const SizedBox(height: 12),
-                Image.asset(
-                  'assets/images/payment-gateway.png',
-                  width: 320,
+                _menuCard(
+                  context,
+                  title: 'Formulir Perubahan Nama',
+                  subtitle: 'Formulir Perubahan Nama Anggota Peradi',
+                  icon: Icons.badge,
+                  onTap: () {
+                    Get.to(() => const PindahDomisiliPage());
+                  },
                 ),
                 const SizedBox(height: 32),
               ],
