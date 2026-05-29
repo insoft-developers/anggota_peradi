@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peradi/utils/api_endpoint.dart';
 import 'package:peradi/webviewpage.dart';
 
-class KartuRusakController extends GetxController {
+class PenambahanGelarController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final dataTambahanItems = <String, dynamic>{}.obs;
   final orderData = <String, dynamic>{}.obs;
@@ -19,6 +19,7 @@ class KartuRusakController extends GetxController {
   final name = TextEditingController();
   final birthPlace = TextEditingController();
   final email = TextEditingController();
+  final reason = TextEditingController();
 
   var birthDate = Rxn<DateTime>();
   var kota = RxnString();
@@ -26,7 +27,8 @@ class KartuRusakController extends GetxController {
   var kotaList = <Map<String, dynamic>>[].obs;
   final picker = ImagePicker();
 
-  var kartuRusak = Rxn<File>();
+  var ktpa = Rxn<File>();
+  var license = Rxn<File>();
 
   /// PHONE
   var phone = "".obs;
@@ -39,6 +41,13 @@ class KartuRusakController extends GetxController {
     name.clear();
     email.clear();
     phone.value = "";
+    birthPlace.clear();
+    birthDate.value = null;
+    kota.value = null;
+    kotaName.value = null;
+    reason.clear();
+    ktpa.value = null;
+    license.value = null;
   }
 
   Future<void> pickImage(Function(File) onPicked) async {
@@ -110,7 +119,7 @@ class KartuRusakController extends GetxController {
           barrierDismissible: false);
 
       FormData data = FormData.fromMap({
-        "slug": ApiEndpoint.slugKartuRusak,
+        "slug": ApiEndpoint.slugPenambahanGelar,
         "nia_part1": nia1.text,
         "nia_part2": nia2.text,
         "name": name.text,
@@ -119,10 +128,16 @@ class KartuRusakController extends GetxController {
         "phone": phone.value,
         "email": email.text,
         "kota_id": kota.value,
-        if (kartuRusak.value != null)
+        "reason": reason.text,
+        if (ktpa.value != null)
           "photo_ktpa": await MultipartFile.fromFile(
-            kartuRusak.value!.path,
-            filename: kartuRusak.value!.path.split('/').last,
+            ktpa.value!.path,
+            filename: ktpa.value!.path.split('/').last,
+          ),
+        if (license.value != null)
+          "photo_license": await MultipartFile.fromFile(
+            license.value!.path,
+            filename: license.value!.path.split('/').last,
           ),
       });
 
@@ -163,7 +178,7 @@ class KartuRusakController extends GetxController {
       final res = await Dio().post(
         "https://anggotaperadi.or.id/api/daftar_ulang_data",
         data: {
-          "slug": ApiEndpoint.slugKartuRusak,
+          "slug": ApiEndpoint.slugPenambahanGelar,
         },
       );
 
@@ -177,6 +192,7 @@ class KartuRusakController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
   }
+
   Future<void> getKota() async {
     try {
       kota.value = null;

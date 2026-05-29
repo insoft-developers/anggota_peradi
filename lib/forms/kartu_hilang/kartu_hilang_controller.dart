@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart' hide FormData;
+import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peradi/utils/api_endpoint.dart';
 import 'package:peradi/webviewpage.dart';
 
@@ -15,10 +17,22 @@ class KartuHilangController extends GetxController {
   final nia1 = TextEditingController();
   final nia2 = TextEditingController();
   final name = TextEditingController();
+  final birthPlace = TextEditingController();
   final email = TextEditingController();
 
   /// PHONE
   var phone = "".obs;
+  var birthDate = Rxn<DateTime>();
+  var kota = RxnString();
+  var kotaName = RxnString();
+  var kotaList = <Map<String, dynamic>>[].obs;
+
+  /// FILE
+  var sket = Rxn<File>();
+  var ktp = Rxn<File>();
+  var ktpa = Rxn<File>();
+
+  final picker = ImagePicker();
 
   var loading = false.obs;
 
@@ -26,8 +40,48 @@ class KartuHilangController extends GetxController {
     nia1.clear();
     nia2.clear();
     name.clear();
+    birthPlace.clear();
     email.clear();
     phone.value = "";
+    birthDate.value = null;
+    kota.value = null;
+    kotaName.value = null;
+    sket.value = null;
+    ktp.value = null;
+    ktpa.value = null;
+  }
+
+  Future<void> pickImage(Function(File) onPicked) async {
+    final XFile? image = await picker.pickImage(
+      source: await _chooseSource(),
+      imageQuality: 80, // optional untuk mengecilkan size
+    );
+
+    if (image != null) {
+      onPicked(File(image.path));
+    }
+  }
+
+  Future<ImageSource> _chooseSource() async {
+    // Tampilkan dialog pilihan
+    ImageSource? source = await Get.dialog<ImageSource>(
+      AlertDialog(
+        title: const Text("Pilih sumber foto"),
+        content: const Text("Apakah ingin mengambil foto atau dari galeri?"),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(result: ImageSource.camera),
+            child: const Text("Camera"),
+          ),
+          TextButton(
+            onPressed: () => Get.back(result: ImageSource.gallery),
+            child: const Text("Gallery"),
+          ),
+        ],
+      ),
+    );
+
+    return source ?? ImageSource.gallery;
   }
 
   Future<void> submit() async {
@@ -66,12 +120,30 @@ class KartuHilangController extends GetxController {
           barrierDismissible: false);
 
       FormData data = FormData.fromMap({
-        "slug": ApiEndpoint.slugKartuRusak,
+        "slug": ApiEndpoint.slugKartuHilang,
+        "name": name.text,
         "nia_part1": nia1.text,
         "nia_part2": nia2.text,
-        "name": name.text,
+        "birth_place": birthPlace.text,
+        "birth_date": birthDate.value?.toIso8601String(),
         "phone": phone.value,
         "email": email.text,
+        "kota_id": kota.value,
+        if (sket.value != null)
+          "photo_kehilangan": await MultipartFile.fromFile(
+            sket.value!.path,
+            filename: sket.value!.path.split('/').last,
+          ),
+        if (ktp.value != null)
+          "photo_ktp": await MultipartFile.fromFile(
+            ktp.value!.path,
+            filename: ktp.value!.path.split('/').last,
+          ),
+        if (ktpa.value != null)
+          "photo_ktpa": await MultipartFile.fromFile(
+            ktpa.value!.path,
+            filename: ktpa.value!.path.split('/').last,
+          ),
       });
 
       final res = await Dio().post(
@@ -123,6 +195,22 @@ class KartuHilangController extends GetxController {
       }
     } catch (e) {
       Get.snackbar("Error", e.toString());
+    }
+  }
+
+  Future<void> getKota() async {
+    try {
+      kota.value = null;
+      kotaList.clear();
+      final res = await Dio().post(
+        "https://anggotaperadi.or.id/api/get_kota_api_all",
+      );
+      // endpoint by provinsi
+
+      kotaList.value = List<Map<String, dynamic>>.from(res.data['data']);
+      print(kotaList);
+    } catch (e) {
+      print(e);
     }
   }
 }

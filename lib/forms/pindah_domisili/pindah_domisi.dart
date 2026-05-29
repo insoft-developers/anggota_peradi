@@ -96,7 +96,7 @@ class _PindahDomisiliPageState extends State<PindahDomisiliPage> {
       backgroundColor: const Color(0xFFF2F4F6),
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text("Pindah Domisili",
+        title: const Text("Formulir Permohonan Perpindahan Domisili",
             style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -385,10 +385,16 @@ class _PindahDomisiliPageState extends State<PindahDomisiliPage> {
             ),
 
             /// ======================================================
-            section("Lampiran"),
 
-            Obx(() => fileButton("Lampiran KTP atau Keterangan dari Kantor",
-                c.lampiran, () => c.pickImage((f) => c.lampiran.value = f))),
+            section("Lampiran"),
+            Obx(() => fileButton("Surat Keterangan Domisili Kantor", 
+            c.photoKeterangan, () => c.pickImage((f) => c.photoKeterangan.value = f))),
+            Obx(() => fileButton("Foto KTP", 
+            c.photoKtp,() => c.pickImage((f) => c.photoKtp.value = f))),
+            Obx(() => fileButton(
+                "Foto Tanda Terima Formulir Perpindahan DPC Asal & DPC Tujuan",
+                c.photoTandaTerima,
+                () => c.pickImage((f) => c.photoTandaTerima.value = f))),
 
             const SizedBox(height: 20),
             Obx(

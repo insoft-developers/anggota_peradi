@@ -1,8 +1,11 @@
+import 'dart:io';
+
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
+import 'package:peradi/forms/kartu_hilang/kartu_hilang_controller.dart';
 import 'package:peradi/utils/fungsi.dart';
 
 class KartuHilangPage extends StatefulWidget {
@@ -13,7 +16,7 @@ class KartuHilangPage extends StatefulWidget {
 }
 
 class _KartuHilangPageState extends State<KartuHilangPage> {
-  final c = Get.find<KartuRusakController>();
+  final c = Get.find<KartuHilangController>();
 
   Widget label(String t) => Padding(
         padding: const EdgeInsets.only(bottom: 6),
@@ -31,6 +34,45 @@ class _KartuHilangPageState extends State<KartuHilangPage> {
     super.initState();
     c.resetForm();
     c.getDataPendukung();
+    c.getKota();
+  }
+
+  Widget fileButton(String title, Rx<File?> fileRx, Function() onTap) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: onTap,
+          icon: const Icon(Icons.upload_file),
+          label: Text(fileRx.value == null ? "Pilih File" : "Ganti File"),
+        ),
+        const SizedBox(height: 8),
+        Obx(() => fileRx.value != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.file(
+                  fileRx.value!,
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover,
+                ),
+              )
+            : const SizedBox()),
+      ],
+    );
+  }
+
+  Widget section(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24, bottom: 8),
+      child: Text(title,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+    );
   }
 
   @override
@@ -58,7 +100,7 @@ class _KartuHilangPageState extends State<KartuHilangPage> {
               ),
             ),
             const SizedBox(height: 24),
-            label("NIA"),
+            label("NIA (Nomor Induk Advokat)"),
             Row(
               children: [
                 Expanded(
@@ -94,6 +136,75 @@ class _KartuHilangPageState extends State<KartuHilangPage> {
               validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
             ),
             const SizedBox(height: 16),
+            label("Tempat Lahir"),
+            TextFormField(
+              controller: c.birthPlace,
+              decoration: deco(),
+              validator: (v) {
+                if (v == null || v.trim().isEmpty) {
+                  return "Wajib diisi";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            label("Tanggal Lahir"),
+            Obx(() => InkWell(
+                  onTap: () async {
+                    final d = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1950),
+                      lastDate: DateTime.now(),
+                    );
+                    if (d != null) c.birthDate.value = d;
+                  },
+                  child: InputDecorator(
+                    decoration: deco(),
+                    child: Text(
+                      c.birthDate.value == null
+                          ? "Pilih tanggal"
+                          : c.birthDate.value.toString().split(" ")[0],
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                )),
+            const SizedBox(height: 16),
+            label("DPC Peradi"),
+            Obx(
+              () => DropdownSearch<String>(
+                selectedItem: c.kotaName.value,
+                items: c.kotaList.map((e) => e['name'].toString()).toList(),
+                popupProps: PopupProps.menu(
+                  showSearchBox: true,
+                  searchFieldProps: TextFieldProps(
+                    decoration: InputDecoration(
+                      hintText: "Cari DPC...",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                  dropdownSearchDecoration: deco().copyWith(
+                    hintText: "Pilih DPC",
+                  ),
+                ),
+                onChanged: (value) {
+                  c.kotaName.value = value;
+
+                  final selected = c.kotaList.firstWhere(
+                    (e) => e['name'].toString() == value,
+                  );
+
+                  c.kota.value = selected['id'].toString();
+
+                  print("ID tersimpan: ${c.kota.value}");
+                },
+                validator: (v) => v == null ? "Wajib dipilih" : null,
+              ),
+            ),
+            const SizedBox(height: 16),
             label("Nomor Handphone"),
             IntlPhoneField(
               decoration: deco(),
@@ -111,7 +222,25 @@ class _KartuHilangPageState extends State<KartuHilangPage> {
                 return null;
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Html(
+                data:
+                    "<span style='color:red;'><strong>Informasi!</strong> Pilih salah satu saja antara Foto KTP atau Foto KTPA.</span>",
+              ),
+            ),
+            section("Upload Dokumen"),
+            Obx(() => fileButton("Foto Surat Kehilangan dari Kepolisian",
+                c.sket, () => c.pickImage((f) => c.sket.value = f))),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto KTP",
+                c.ktp, () => c.pickImage((f) => c.ktp.value = f))),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto KTPA",
+                c.ktpa, () => c.pickImage((f) => c.ktpa.value = f))),
+            const SizedBox(height: 16),
             Obx(
               () => Container(
                 padding: const EdgeInsets.all(12),

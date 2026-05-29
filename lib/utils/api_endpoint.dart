@@ -6,6 +6,8 @@ class ApiEndpoint {
   static const String slugDaftarUlang = 'data-ulang';
   static const String slugPindahDomisili =
       'formulir-pemberitahuan-pindah-domisili-anggota';
-  static const String slugKartuRusak = 'formulir-pengganti-kartu-rusak';
+  static const String slugKartuRusak = 'formulir-kartu-rusak';
   static const String slugKartuHilang = 'formulir-kartu-hilang';
+  static const String slugPenambahanGelar = 'formulir-penambahan-gelar';
+  static const String slugPerubahanNama = 'formulir-perubahan-nama';
 }

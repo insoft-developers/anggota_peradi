@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:peradi/about.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang.dart';
 import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
-import 'package:peradi/forms/kartu_rusak/kartu_rusak.dart';
+import 'package:peradi/forms/kartu_hilang/kartu_hilang_controller.dart';
 import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
-import 'package:peradi/forms/pindah_domisili/pindah_domisi.dart';
+import 'package:peradi/forms/penambahan_gelar/penambahan_gelar_controller.dart';
+import 'package:peradi/forms/perubahan_nama/perubahan_nama_controller.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisili_controller.dart';
 import 'package:peradi/ktpa.dart';
 import 'package:peradi/webviewpage.dart';
@@ -21,6 +22,9 @@ class _HomeViewState extends State<HomeView> {
   final controller = Get.put(DaftarUlangController(), permanent: true);
   final controller2 = Get.put(PindahDomisiliController(), permanent: true);
   final controller3 = Get.put(KartuRusakController(), permanent: true);
+  final controller4 = Get.put(KartuHilangController(), permanent: true);
+  final controller5 = Get.put(PenambahanGelarController(), permanent: true);
+  final controller6 = Get.put(PerubahanNamaController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -28,7 +32,7 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Homepage',
+          'Beranda',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xFF0D47A1),
@@ -80,13 +84,6 @@ class _HomeViewState extends State<HomeView> {
               url:
                   'https://anggotaperadi.or.id/anggota/formulir/formulir-pemberitahuan-pindah-domisili-anggota',
             ),
-            // _drawerItem(
-            //   context,
-            //   icon: Icons.credit_card,
-            //   title: 'Pengganti Kartu Rusak',
-            //   url:
-            //       'https://anggotaperadi.or.id/anggota/formulir/formulir-pengganti-kartu-rusak',
-            // ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.info_outline),
@@ -130,7 +127,7 @@ class _HomeViewState extends State<HomeView> {
                 const SizedBox(height: 24),
                 _menuCard(
                   context,
-                  title: 'Data Ulang',
+                  title: 'DATA ULANG',
                   subtitle: 'Formulir Data Ulang Advocat Peradi',
                   icon: Icons.assignment,
                   onTap: () {
@@ -139,22 +136,13 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 _menuCard(
                   context,
-                  title: 'Penggantian KTPA',
+                  title: 'PENGGANTIAN KTPA',
                   subtitle: 'Formulir Penggantian KTPA',
                   icon: Icons.location_city,
                   onTap: () {
                     Get.to(() => const Ktpa());
                   },
                 ),
-                // _menuCard(
-                //   context,
-                //   title: 'Pengganti Kartu Rusak',
-                //   subtitle: 'Formulir Pengajuan Kartu Rusak atau Hilang',
-                //   icon: Icons.credit_card,
-                //   onTap: () {
-                //     Get.to(() => const KartuRusakPage());
-                //   },
-                // ),
                 const SizedBox(height: 16),
                 InkWell(
                   onTap: () {
@@ -274,12 +262,10 @@ class _HomeViewState extends State<HomeView> {
       trailing: const Icon(Icons.chevron_right),
       onTap: () {
         Get.back();
-        if (title == 'Formulir Data Ulang') {
+        if (title == 'Data Ulang') {
           Get.to(() => const DaftarUlang());
-        } else if (title == 'Formulir Pindah Domisili') {
-          Get.to(() => const PindahDomisiliPage());
-        } else if (title == 'Pengganti Kartu Rusak') {
-          Get.to(() => const KartuRusakPage());
+        } else if (title == 'Penggantian KTPA') {
+          Get.to(() => const Ktpa());
         } else {
           Navigator.push(
             context,

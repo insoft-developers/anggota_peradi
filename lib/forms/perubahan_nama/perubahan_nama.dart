@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
+import 'package:peradi/forms/perubahan_nama/perubahan_nama_controller.dart';
 import 'package:peradi/utils/fungsi.dart';
 
-class KartuRusakPage extends StatefulWidget {
-  const KartuRusakPage({super.key});
+class PerubahanNamaPage extends StatefulWidget {
+  const PerubahanNamaPage({super.key});
 
   @override
-  State<KartuRusakPage> createState() => _KartuRusakPageState();
+  State<PerubahanNamaPage> createState() => _PerubahanNamaPageState();
 }
 
-class _KartuRusakPageState extends State<KartuRusakPage> {
-  final c = Get.find<KartuRusakController>();
+class _PerubahanNamaPageState extends State<PerubahanNamaPage> {
+  final c = Get.find<PerubahanNamaController>();
 
   Widget label(String t) => Padding(
         padding: const EdgeInsets.only(bottom: 6),
@@ -75,7 +75,7 @@ class _KartuRusakPageState extends State<KartuRusakPage> {
       backgroundColor: const Color(0xFFF2F4F6),
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text("Formulir Kartu Rusak",
+        title: const Text("Formulir Perubahan Nama",
             style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -216,9 +216,29 @@ class _KartuRusakPageState extends State<KartuRusakPage> {
               },
             ),
             const SizedBox(height: 16),
-            Obx(() => fileButton("Foto KTPA yang rusak/patah",
-                c.kartuRusak, () => c.pickImage((f) => c.kartuRusak.value = f))),
-            
+            label("Nama Lengkap & Gelar yang Baru"),
+            TextFormField(
+              controller: c.newName,
+              decoration: deco(),
+              validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
+            ),
+            const SizedBox(height: 16),
+            label("Alasan Perubahan Nama"),
+            TextFormField(
+              controller: c.reason,
+              maxLines: 3,
+              decoration: deco(),
+              validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
+            ),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto KTP Terbaru", c.ktp,
+                () => c.pickImage((f) => c.ktp.value = f))),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto KTPA yang terakhir", c.ktpa,
+                () => c.pickImage((f) => c.ktpa.value = f))),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto Surat Penetapan dari Pengadilan Negeri",
+                c.penetapan, () => c.pickImage((f) => c.penetapan.value = f))),
             const SizedBox(height: 20),
             Obx(
               () => Container(

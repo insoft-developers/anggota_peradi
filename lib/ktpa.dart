@@ -5,6 +5,8 @@ import 'package:peradi/forms/daftar_ulang/daftar_ulang_controller.dart';
 import 'package:peradi/forms/kartu_hilang/kartu_hilang.dart';
 import 'package:peradi/forms/kartu_rusak/kartu_rusak.dart';
 import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
+import 'package:peradi/forms/penambahan_gelar/penambahan_gelar.dart';
+import 'package:peradi/forms/perubahan_nama/perubahan_nama.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisi.dart';
 import 'package:peradi/forms/pindah_domisili/pindah_domisili_controller.dart';
 import 'package:peradi/webviewpage.dart';
@@ -68,7 +70,7 @@ class _KtpaState extends State<Ktpa> {
                   subtitle: 'Formulir Kartu Rusak Advocat Peradi',
                   icon: Icons.broken_image,
                   onTap: () {
-                    Get.to(() => const PindahDomisiliPage());
+                    Get.to(() => const KartuRusakPage());
                   },
                 ),
                 _menuCard(
@@ -86,7 +88,7 @@ class _KtpaState extends State<Ktpa> {
                   subtitle: 'Formulir Penambahan Gelar Anggota Peradi',
                   icon: Icons.school,
                   onTap: () {
-                    Get.to(() => const PindahDomisiliPage());
+                    Get.to(() => const PenambahanGelarPage());
                   },
                 ),
                 _menuCard(
@@ -95,7 +97,7 @@ class _KtpaState extends State<Ktpa> {
                   subtitle: 'Formulir Perubahan Nama Anggota Peradi',
                   icon: Icons.badge,
                   onTap: () {
-                    Get.to(() => const PindahDomisiliPage());
+                    Get.to(() => const PerubahanNamaPage());
                   },
                 ),
                 const SizedBox(height: 32),

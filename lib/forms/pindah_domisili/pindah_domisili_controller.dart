@@ -48,7 +48,9 @@ class PindahDomisiliController extends GetxController {
   /// OTHER STATE
   var phone = "".obs;
   var tanggal = Rxn<DateTime>();
-  var lampiran = Rxn<File>();
+  var photoKtp = Rxn<File>();
+  var photoKeterangan = Rxn<File>();
+  var photoTandaTerima = Rxn<File>();
 
   final picker = ImagePicker();
   var loading = false.obs;
@@ -63,7 +65,9 @@ class PindahDomisiliController extends GetxController {
     provinsiTujuan.value = null;
     dpcTujuan.value = null;
     tanggal.value = null;
-    lampiran.value = null;
+    photoKtp.value = null;
+    photoKeterangan.value = null;
+    photoTandaTerima.value = null;
 
     ketuaAsal.clear();
     ketuaTujuan.clear();
@@ -261,9 +265,14 @@ class PindahDomisiliController extends GetxController {
         "tujuan_provinsi_id": provinsiTujuan.value,
         "tujuan_kota_id": dpcTujuan.value,
         "tgl_dpc_tujuan": tanggal.value?.toIso8601String(),
-        if (lampiran.value != null)
+        if (photoKeterangan.value != null)
           "photo_keterangan":
-              await MultipartFile.fromFile(lampiran.value!.path),
+              await MultipartFile.fromFile(photoKeterangan.value!.path),
+        if (photoKtp.value != null)
+          "photo_ktp": await MultipartFile.fromFile(photoKtp.value!.path),
+        if (photoTandaTerima.value != null)
+          "photo_tanda_terima":
+              await MultipartFile.fromFile(photoTandaTerima.value!.path),
       });
 
       final res = await Dio().post(
@@ -290,12 +299,18 @@ class PindahDomisiliController extends GetxController {
           colorText: Colors.white,
         );
       }
-    } catch (e) {
-      debugPrint(e.toString());
-      Get.back();
+    } on DioException catch (e) {
+      debugPrint("STATUS: ${e.response?.statusCode}");
+      debugPrint("DATA: ${e.response?.data}");
+      debugPrint("ERROR: ${e.message}");
+
+      if (Get.isDialogOpen ?? false) {
+        Get.back();
+      }
+
       Get.snackbar(
         "Error",
-        "Terjadi kesalahan saat menyimpan data, Lengkapi semua data yang diperlukan.",
+        e.response?.data.toString() ?? "Server Error",
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.red,
         colorText: Colors.white,

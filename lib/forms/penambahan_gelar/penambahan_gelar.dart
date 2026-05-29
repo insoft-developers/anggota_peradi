@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:peradi/forms/kartu_rusak/kartu_rusak_controller.dart';
+import 'package:peradi/forms/penambahan_gelar/penambahan_gelar_controller.dart';
 import 'package:peradi/utils/fungsi.dart';
 
-class KartuRusakPage extends StatefulWidget {
-  const KartuRusakPage({super.key});
+class PenambahanGelarPage extends StatefulWidget {
+  const PenambahanGelarPage({super.key});
 
   @override
-  State<KartuRusakPage> createState() => _KartuRusakPageState();
+  State<PenambahanGelarPage> createState() => _PenambahanGelarPageState();
 }
 
-class _KartuRusakPageState extends State<KartuRusakPage> {
-  final c = Get.find<KartuRusakController>();
+class _PenambahanGelarPageState extends State<PenambahanGelarPage> {
+  final c = Get.find<PenambahanGelarController>();
 
   Widget label(String t) => Padding(
         padding: const EdgeInsets.only(bottom: 6),
@@ -75,7 +75,7 @@ class _KartuRusakPageState extends State<KartuRusakPage> {
       backgroundColor: const Color(0xFFF2F4F6),
       appBar: AppBar(
         backgroundColor: primary,
-        title: const Text("Formulir Kartu Rusak",
+        title: const Text("Formulir Penambahan Gelar",
             style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
@@ -216,8 +216,20 @@ class _KartuRusakPageState extends State<KartuRusakPage> {
               },
             ),
             const SizedBox(height: 16),
-            Obx(() => fileButton("Foto KTPA yang rusak/patah",
-                c.kartuRusak, () => c.pickImage((f) => c.kartuRusak.value = f))),
+
+            label("Alasan Penambahan Gelar"),
+            TextFormField(
+              controller: c.reason,
+              maxLines: 3,
+              decoration: deco(),
+              validator: (v) => v!.isEmpty ? "Wajib diisi" : null,
+            ),
+            const SizedBox(height: 16),
+            Obx(() => fileButton("Foto KTPA PERADI yang lama",
+                c.ktpa, () => c.pickImage((f) => c.ktpa.value = f))),
+
+                Obx(() => fileButton("Foto Ijazah / SKL legalisir basah" ,
+                c.license, () => c.pickImage((f) => c.license.value = f))),
             
             const SizedBox(height: 20),
             Obx(
