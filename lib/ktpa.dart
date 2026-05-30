@@ -58,7 +58,7 @@ class _KtpaState extends State<Ktpa> {
                 _menuCard(
                   context,
                   title: 'Formulir Kartu Hilang',
-                  subtitle: 'Formulir Kartu Hilang Advocat Peradi',
+                  subtitle: 'Formulir Kartu Hilang Advokat Peradi',
                   icon: Icons.sd_card_alert,
                   onTap: () {
                     Get.to(() => const KartuHilangPage());
@@ -67,7 +67,7 @@ class _KtpaState extends State<Ktpa> {
                 _menuCard(
                   context,
                   title: 'Formulir Kartu Rusak',
-                  subtitle: 'Formulir Kartu Rusak Advocat Peradi',
+                  subtitle: 'Formulir Kartu Rusak Advokat Peradi',
                   icon: Icons.broken_image,
                   onTap: () {
                     Get.to(() => const KartuRusakPage());

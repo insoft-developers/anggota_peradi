@@ -128,7 +128,7 @@ class _HomeViewState extends State<HomeView> {
                 _menuCard(
                   context,
                   title: 'DATA ULANG',
-                  subtitle: 'Formulir Data Ulang Advocat Peradi',
+                  subtitle: 'Formulir Data Ulang Advokat Peradi',
                   icon: Icons.assignment,
                   onTap: () {
                     Get.to(() => const DaftarUlang());
